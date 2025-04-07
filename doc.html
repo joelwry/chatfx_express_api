@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat API Documentation</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 2rem; background: #f8f9fa; color: #212529; }
+    h1, h2 { color: #343a40; }
+    code, pre { background: #eee; padding: 0.5rem; border-radius: 5px; display: block; overflow-x: auto; }
+    pre { margin-bottom: 1rem; }
+    .section { margin-bottom: 2rem; }
+  </style>
+</head>
+<body>
+  <h1>Chat API Documentation</h1>
+
+  <div class="section">
+    <h2>1. Register a User</h2>
+    <p>POST <code>/register</code></p>
+    <p>Request Body (JSON):</p>
+    <pre>{
+  "username": "your_name"
+}</pre>
+
+    <p>Response:</p>
+    <pre>{
+  "token": "generated-token",
+  "username": "your_name"
+}</pre>
+  </div>
+
+  <div class="section">
+    <h2>2. Send a Message</h2>
+    <p>POST <code>/message</code></p>
+    <p>Request Body (JSON):</p>
+    <pre>{
+  "token": "your_token",
+  "content": "Hello, world!"
+}</pre>
+
+    <p>Response:</p>
+    <pre>{
+  "success": true,
+  "message": {
+    "id": "msg-id",
+    "sender": "your_name",
+    "content": "Hello, world!",
+    "timestamp": "2025-04-05T12:34:56.789Z"
+  }
+}</pre>
+  </div>
+
+  <div class="section">
+    <h2>3. Fetch Messages</h2>
+    <p>GET <code>/messages</code></p>
+    <p>Returns an array of the most recent 50 messages.</p>
+    <pre>[
+  {
+    "id": "msg-id",
+    "sender": "someone",
+    "content": "Hi!",
+    "timestamp": "2025-04-05T12:30:00.123Z"
+  },
+  ...
+]</pre>
+  </div>
+
+  <div class="section">
+    <h2>4. Sample Python Usage</h2>
+    <p>Python script using <code>requests</code> module:</p>
+    <pre><code class="language-python">import requests
+
+BASE_URL = "http://localhost:3000"
+
+# Register
+res = requests.post(f"{BASE_URL}/register", json={"username": "alice"})
+data = res.json()
+token = data["token"]
+
+# Send a message
+requests.post(f"{BASE_URL}/message", json={"token": token, "content": "Hello!"})
+
+# Fetch messages
+messages = requests.get(f"{BASE_URL}/messages").json()
+print(messages)</code></pre>
+  </div>
+</body>
+</html>
