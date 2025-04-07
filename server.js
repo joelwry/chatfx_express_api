@@ -23,10 +23,26 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/chat", chatRoutes);
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI).then(() => {
-  console.log("MongoDB connected");
-});
+
+const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
+
+
+async function runMongoConnect() {
+  try {
+    // Create a Mongoose client with a MongoClientOptions object to set the Stable API version
+    await mongoose.connect(process.env.MONGO_URI, clientOptions);
+    // await mongoose.connection.db.admin().command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  }catch(error){
+    console.log(error.message);
+  }
+}
+runMongoConnect().catch(console.dir);
+
+// Connect to MongoDB locally
+// mongoose.connect(process.env.MONGO_URI).then(() => {
+//   console.log("MongoDB connected");
+// });
 
 // Socket.IO
 io.on("connection", (socket) => {
